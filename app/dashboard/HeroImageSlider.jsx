@@ -4,6 +4,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import './Slider.css';
 
 const Carousel = () => {
+
+
     const [items, setItems] = useState([
         { id: 1, name: 'Openheimer', img: 'https://i.pinimg.com/1200x/5b/d5/36/5bd5364ccbb3b7e09fec715e345bceb4.jpg' },
         { id: 2, name: 'Avengers 4', img: 'https://i.pinimg.com/1200x/ce/a9/ab/cea9ab625d1486fbfc534b6984b12fbd.jpg' },
@@ -16,7 +18,6 @@ const Carousel = () => {
         { id: 9, name: 'Kung Fu Panda 3', img: 'https://i.pinimg.com/1200x/d6/dc/e9/d6dce992c9760f6e538d3b263ee00ac5.jpg' },
         { id: 10, name: 'Cars 4', img: 'https://i.pinimg.com/1200x/89/73/cb/8973cb80e93e6a955f725b97a4c9cff0.jpg' },
     ]);
-
     const [animationType, setAnimationType] = useState('');
     const timeRunning = 3000;
     const timeAutoNext = 7000;
@@ -59,7 +60,7 @@ const Carousel = () => {
     };
 
     return (
-        <div className="carousel">
+        <div className="carousel min-h-screen">
             <div className={`list ${animationType}`}>
                 {items.map((item, index) => (
                     <div

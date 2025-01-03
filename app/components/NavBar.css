@@ -1,0 +1,153 @@
+/* General Styling */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: #333;
+  color: #fff;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+.title {
+  font-size: 30px;
+  text-transform: uppercase;
+  color: #66fcf1;
+  font-weight: bold;
+  line-height: 1;
+
+  opacity: 0;
+  animation: animate 1s ease-in-out 0.3s 1 forwards;
+}
+
+@keyframes animate {
+  from {
+    opacity: 0;
+    transform: translate(0, 100px);
+    filter: blur(33px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(0);
+    filter: blur(0);
+  }
+}
+
+/* Menu Styling */
+.menu {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.menu.active {
+  flex-direction: column;
+  position: absolute;
+  top: 4rem;
+  right: 2rem;
+  background: #444;
+  padding: 1rem;
+  border-radius: 5px;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: #fff;
+  font-size: 1rem;
+  transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+  color: #66fcf1;
+}
+
+/* Hamburger Styling */
+.hamburger {
+  display: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+/* Search Box Styling */
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.search-input {
+  padding: 0.5rem;
+  border: none;
+  border-radius: 3px;
+  font-size: 1rem;
+}
+
+.search-button {
+  padding: 0.5rem 1rem;
+  background-color: #1db954;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.search-button:hover {
+  background-color: #17a047;
+}
+
+/* Sign-In Button Styling */
+.sign-in-button {
+  padding: 0.5rem 1.5rem;
+  margin-left: 1rem;
+  background-color: #555;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.sign-in-button:hover {
+  background-color: #444;
+}
+
+/* Responsive Adjustments */
+.menu.active .search-box,
+.menu.active .sign-in-button {
+  width: 100%;
+  justify-content: center;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .menu {
+    display: none;
+  }
+
+  .menu.active {
+    display: flex;
+  }
+
+  .hamburger {
+    display: block;
+  }
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

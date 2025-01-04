@@ -2,6 +2,7 @@
 'use client'
 import React, { useState, useEffect, useRef } from 'react';
 import './Slider.css';
+import Link from 'next/link';
 
 const Carousel = () => {
 
@@ -79,7 +80,7 @@ const Carousel = () => {
                                     dicta repudiandae.
                                 </div>
                                 <div className="btn">
-                                    <button>See More</button>
+                                    <button><Link href={"/dashboard"}>See More</Link></button>
                                     <button>Watch Now</button>
                                 </div>
                             </div>

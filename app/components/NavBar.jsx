@@ -20,7 +20,7 @@ const NavBar = () => {
     };
 
     return (
-        <nav className="bg-gray-900 text-white shadow-lg">
+        <nav className="bg-slate-800/90 text-white shadow-lg">
             <div className="container mx-auto flex items-center justify-between py-1 px-6">
                 <div className="text-2xl font-bold">
                     <div className="title">Mflix</div>
@@ -50,7 +50,7 @@ const NavBar = () => {
                         />
 
                     </form>
-                    <button className="px-4 py-2 bg-gray-800 rounded hover:bg-[#45a29e] transition duration-300">
+                    <button className="sign-in-button px-4 py-2 bg-gray-800 rounded hover:bg-[#45a29e] transition duration-300">
                         Sign In
                     </button>
                 </div>

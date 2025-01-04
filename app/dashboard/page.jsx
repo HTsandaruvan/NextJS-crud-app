@@ -4,13 +4,9 @@ import Carousel from './HeroImageSlider'
 
 const page = () => {
     return (
-        <div className='container '>
-            <div className=' py-10 my-3 items-center h-screen'>
-
-                <Carousel />
+        <div className='bg-slate-800'>
+            <div className='py-10 container mx-auto px-6'>
                 <DashboardForm />
-
-
             </div>
         </div>
     )

@@ -1,5 +1,6 @@
 import localFont from "next/font/local";
 import "./globals.css";
+import { Toaster } from "@/components/ui/toaster";
 
 import NavBar from "./components/NavBar";
 
@@ -27,6 +28,7 @@ export default function RootLayout({ children }) {
       >
         <NavBar />
         {children}
+        <Toaster />
       </body>
     </html>
   );

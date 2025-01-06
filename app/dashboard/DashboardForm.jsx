@@ -39,14 +39,14 @@ const DashboardForm = () => {
     if (error) return <div>{error}</div>;
     //TODO:
     return (
-        <div className="mx-auto bg-black">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 bg-slate-800 w-full">
+        <div className="mx-auto">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 w-full">
                 {movies.length > 0 ? (
                     movies.map((movie) => (
 
-                        <div key={movie._id} className="h-[480px]">
+                        <div key={movie._id} className="h-[480px] hover:scale-105 duration-500  transition-all">
 
-                            <Card className='h-full'>
+                            <Card className='h-full shadow-md shadow-slate-50'>
                                 <CardHeader>
                                     <CardTitle className="space-x-1">{movie.title}<span className='text-sm text-neutral-400'>{` (${movie?.year})`}</span> </CardTitle>
                                     <CardDescription className='sr-only'>{movie.plot}</CardDescription>

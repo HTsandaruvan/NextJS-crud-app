@@ -31,16 +31,15 @@ const LoginForm = () => {
         if (isValid) {
             // Login Form Data Submission
             const login = await loginUser({ email: email, password: password });
-
+            setEmail("");
+            setPassword("");
             console.log("LOGIN RESPONSE", login);
         }
     };
     return (
         <div className="min-h-screen flex items-center justify-center">
             <div className="w-[380px] mx-auto ">
-                <div className="flex items-center justify-center my-3">
-                    <h1 className="font-semibold text-2xl">Evotech</h1>
-                </div>
+
                 <div className="bg-white border border-gray-200 shadow-md p-4 rounded-lg">
                     <form onSubmit={handleSubmit} action={""} className="space-y-6">
                         <h1 className="text-start text-xl font-bold text-gray-900">
@@ -113,7 +112,7 @@ const LoginForm = () => {
                         </div>
                         <button
                             type="submit"
-                            className="w-full text-white bg-blue-600 hover:bg-blue-700 transition-all focus-visible:ring-4 ring-2 focus:ring-blue-300 px-5 py-1.5"
+                            className="w-full text-white bg-[#45a29e] hover:bg-[#45a29e]/90 transition-all focus-visible:ring-4 ring-2 focus:ring-blue-300 px-5 py-1.5"
                         >
                             Sign in
                         </button>

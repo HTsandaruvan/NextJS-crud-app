@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import "./NavBar.css";
 
 import React, { useState } from "react";
@@ -20,10 +21,10 @@ const NavBar = () => {
     };
 
     return (
-        <nav className="bg-slate-800/90 text-white shadow-lg">
+        <nav className=" bg-gradient-to-r from-gray-500 to-cyan-200   text-white shadow-lg">
             <div className="container mx-auto flex items-center justify-between py-1 px-6">
                 <div className="text-2xl font-bold">
-                    <div className="title">Mflix</div>
+                    <Link href={"/"}> <div className="title">Mflix</div></Link>
 
                 </div>
                 {/* Desktop Menu */}
@@ -46,13 +47,13 @@ const NavBar = () => {
                             placeholder="Search..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            className="p-2 rounded-l-md bg-gray-800 text-white outline-none"
+                            className="p-2 rounded-l-md bg-white text-slate-500 outline-none xl:w-96 md:w-44"
                         />
 
                     </form>
-                    <button className="sign-in-button px-4 py-2 bg-gray-800 rounded hover:bg-[#45a29e] transition duration-300">
+                    <Link href={"/login"}><button className="sign-in-button px-4 py-2 bg-gray-800 rounded hover:bg-[#45a29e] transition duration-300">
                         Sign In
-                    </button>
+                    </button></Link>
                 </div>
                 {/* Hamburger Menu */}
                 <div className="flex md:hidden text-2xl cursor-pointer" onClick={toggleMenu}>

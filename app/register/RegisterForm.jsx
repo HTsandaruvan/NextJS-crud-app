@@ -119,9 +119,7 @@ const RegisterForm = () => {
             // Reset the form
             formElement.reset();
         }
-
     }
-
     return (
         <div className=' min-h-screen flex items-center justify-center'>
             <Card className='w-[380px] mx-auto  bg-white/90'>
@@ -143,7 +141,7 @@ const RegisterForm = () => {
 
                             <div className='flex flex-col space-y-1.5'>
                                 <Label htmlFor="email">Email</Label>
-                                <Input id="email" name="email" placeholder="name@example.com" className={`${error?.error && error?.message.includes("Email") ? "border-3 border-red-600" : ""}`} />
+                                <Input id="email" name="email" placeholder="name@example.com" className={`${error?.error && error?.message.includes("Email") || error?.message.includes("email") ? "border-3 border-red-600" : ""}`} />
                             </div>
 
                             <div className='flex flex-col space-y-1.5'>

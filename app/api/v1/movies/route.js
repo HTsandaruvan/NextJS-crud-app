@@ -21,7 +21,7 @@ export const GET = async (req) => {
   } catch (error) {
     console.log("MONGODB ERROR", error);
     return NextResponse.json(
-      { error: "Internal Server Error" },
+      { error: "Internal host Server Error" },
       { status: 500 }
     );
   }

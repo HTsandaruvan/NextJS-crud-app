@@ -122,7 +122,7 @@ const RegisterForm = () => {
     }
     return (
         <div className=' min-h-screen flex items-center justify-center'>
-            <Card className='w-[380px] mx-auto  bg-white/90'>
+            <Card className='lg:w-[380px] md:w-[380px] sm:w-[320px] mx-auto sm:mx-[5px]   bg-white/90'>
                 <CardHeader>
                     <CardTitle className="text-xl">
                         Create an account

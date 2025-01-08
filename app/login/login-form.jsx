@@ -37,8 +37,8 @@ const LoginForm = () => {
         }
     };
     return (
-        <div className="min-h-screen flex items-center justify-center">
-            <div className="w-[380px] mx-auto ">
+        <div className="min-h-screen flex items-center justify-center ">
+            <div className="lg:w-[380px] md:w-[380px] sm:w-[320px] mx-auto sm:mx-[5px]  ">
 
                 <div className="bg-white border border-gray-200 shadow-md p-4 rounded-lg">
                     <form onSubmit={handleSubmit} action={""} className="space-y-6">

@@ -13,7 +13,7 @@ import { ToastAction } from "@/components/ui/toast"
 
 
 import React, { useState } from 'react'
-import { registerUser } from '../libs/apis/server'
+import { registerUser } from '../../lib/apis/server'
 
 const DEFAULT_ERROR = {
     error: false,

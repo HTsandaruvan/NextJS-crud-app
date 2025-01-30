@@ -1,5 +1,6 @@
 // import ky from "ky";
 import { api } from "../api";
+require("dotenv").config();
 
 export const loginUser = async (loginData) => {
   // console.log(loginData);
@@ -39,7 +40,7 @@ export const registerUser = async (formData) => {
 
 export const getMovies = async () => {
   try {
-    const response = await api.get("movies", {
+    const response = await api.get("v1/movies", {
       cache: "no-store",
     });
 

@@ -1,7 +1,9 @@
 import { MongoClient, ServerApiVersion } from "mongodb";
+require("dotenv").config();
 
 const clientPromise = () => {
-  const MONGODB_URI = process.env.NEXT_PUBLIC_MONGODB_URI;
+  const MONGODB_URI = process.env.MONGODB_URI;
+
   const options = {
     serverApi: {
       version: ServerApiVersion.v1,

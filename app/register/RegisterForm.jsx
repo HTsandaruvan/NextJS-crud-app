@@ -1,173 +1,174 @@
-'use client'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Loader2 } from "lucide-react"
+"use client";
 
-import Link from 'next/link'
-//keep this as a client component
-
-import { useToast } from "@/hooks/use-toast"
-import { ToastAction } from "@/components/ui/toast"
-
-
-import React, { useState } from 'react'
-import { registerUser } from '../../lib/apis/server'
+import { useState } from "react";
+import Link from "next/link";
+import { Loader2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardFooter,
+    CardHeader,
+    CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+// import { ToastAction } from "@/components/ui/toast";
+import { useToast } from "@/hooks/use-toast";
+// import { registerUser } from "@/lib/apis/server";
+import { signUp } from "@/lib/auth-client";
 
 const DEFAULT_ERROR = {
     error: false,
     message: "",
 };
-const RegisterForm = () => {
+
+// Keep this as a client component (functional component)
+export default function RegisterForm() {
     const [error, setError] = useState(DEFAULT_ERROR);
-    const [isLoading, setLoading] = useState(false)
-    const { toast } = useToast()
+    const [isLoading, setLoading] = useState(false);
+    const { toast } = useToast();
 
     const handleSubmitForm = async (event) => {
         event?.preventDefault();
-        const formElement = event.currentTarget;
-
-        const formData = new FormData(event?.currentTarget)
-
-        const name = formData.get("name").toString() ?? "";
-        const email = formData.get("email").toString() ?? "";
-        const password = formData.get("password").toString() ?? "";
+        const formData = new FormData(event?.currentTarget);
+        const name = formData.get("name").toString();
+        const email = formData.get("email").toString();
+        const password = formData.get("password") ?? "";
         const confirmPassword = formData.get("confirm-password") ?? "";
 
+        // console.log("Sumbitted!", { name, email, password, confirmPassword });
 
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Basic email format
-        const nameRegex = /^[a-zA-Z\s]+$/; // Only letters and spaces
-        const passwordValidation = {
-            minLength: 8,
-            uppercase: /[A-Z]/,
-            lowercase: /[a-z]/,
-            number: /[0-9]/,
-            specialCharacter: /[@$!%*?&]/,
-        };
+        // Basic frontend validation logic
+        // if (name && email && password && confirmPassword) {
+        if (password === confirmPassword) {
+            setError(DEFAULT_ERROR);
+            // setLoading(true);
+            // const registerResp = await registerUser({ name, email, password });
+            // setLoading(false);
 
-        // Name Validation
-        if (!name) {
-            setError({ error: true, message: "Name is required." });
-            return;
-        }
+            // if (registerResp?.error) {
+            //   setError({ error: true, message: registerResp.error });
+            // } else {
+            //   toast({
+            //     variant: "success",
+            //     title: "Registration successful!",
+            //     description: "Please continue with login",
+            //     action: (
+            //       <ToastAction altText="Login" className="hover:bg-green-700">
+            //         Login
+            //       </ToastAction>
+            //     ),
+            //   });
+            // }
 
-        if (!nameRegex.test(name)) {
-            setError({ error: true, message: "Name can only contain letters and spaces." });
-            return;
-        }
+            const { data, error } = await signUp.email(
+                {
+                    email: email,
+                    password: password,
+                    name: name,
+                    image: undefined,
+                },
+                {
+                    onRequest: () => {
+                        // console.log("onRequest", ctx);
+                    },
+                    onSuccess: (ctx) => {
+                        console.log("onSuccess", ctx);
+                    },
+                    onError: (ctx) => {
+                        if (ctx) {
+                            setError({ error: true, message: ctx.error.message });
+                        }
+                    },
+                }
+            );
 
-        // Email Validation
-        if (!email) {
-            setError({ error: true, message: "Email is required." });
-            return;
-        }
-
-        if (!emailRegex.test(email)) {
-            setError({ error: true, message: "Invalid email format." });
-            return;
-        }
-
-        // Password Validation
-        if (confirmPassword !== null && (password !== confirmPassword)) {
-            setError({ error: true, message: "Passwords do not match." });
-            return;
-        }
-
-        if (password.length < passwordValidation.minLength) {
-            setError({ error: true, message: `Password must be at least ${passwordValidation.minLength} characters long.` });
-            return;
-        }
-
-        if (!passwordValidation.uppercase.test(password)) {
-            setError({ error: true, message: "Password must contain at least one uppercase letter." });
-            return;
-        }
-
-        if (!passwordValidation.lowercase.test(password)) {
-            setError({ error: true, message: "Password must contain at least one lowercase letter." });
-            return;
-        }
-
-        if (!passwordValidation.number.test(password)) {
-            setError({ error: true, message: "Password must contain at least one number." });
-            return;
-        }
-
-        if (!passwordValidation.specialCharacter.test(password)) {
-            setError({ error: true, message: "Password must contain at least one special character (@, $, !, %, *, ?, &)." });
-            return;
-        }
-
-        // If all validations pass
-        console.log("All validations passed");
-        setError(DEFAULT_ERROR);
-        setLoading(true)
-
-        // Send to backend
-        const registerResponse = await registerUser({ name, email, password });
-        setLoading(false)
-        if (registerResponse?.error) {
-            setError({ error: true, message: registerResponse.error });
+            if (data) {
+                console.log("data", data);
+            }
         } else {
-            toast({
-                variant: "success",
-                title: "Account created",
-                description: "Your account has been successfully created.",
-                action: <ToastAction className="bg-green-600 hover:bg-green-600/90" altText="Close"><Link href={"/login"}>Login</Link></ToastAction>,
-            });
-            // Reset the form
-            formElement.reset();
+            setError({ error: true, message: "Passwords doesn't match" });
         }
-    }
+        // }
+
+        // console.log("Error!", error);
+    };
+
     return (
-        <div className=' min-h-screen flex items-center justify-center'>
-            <Card className='lg:w-[380px] md:w-[380px] sm:w-[320px] mx-auto sm:mx-[5px]   bg-white/90'>
+        <div className="flex justify-center items-center min-h-screen">
+            <Card className="bg-blue-50/90 w-[350px]">
                 <CardHeader>
-                    <CardTitle className="text-xl">
-                        Create an account
-                    </CardTitle>
-                    <CardDescription>
+                    <CardTitle className="text-center">Create an account</CardTitle>
+                    <CardDescription className="text-xs text-center">
                         Enter your information to get started
                     </CardDescription>
                 </CardHeader>
                 <form onSubmit={handleSubmitForm}>
                     <CardContent>
-                        <div className='flex flex-col space-y-5'>
-                            <div className='flex flex-col space-y-1.5'>
+                        <div className="flex flex-col space-y-4">
+                            <div className="flex flex-col space-y-1.5">
                                 <Label htmlFor="name">Name</Label>
-                                <Input id="name" name="name" placeholder="Jone Doe" className={`${error?.error && error?.message.includes("Name") ? "border-3 border-red-600" : ""}`} />
+                                <Input id="name" name="name" placeholder="John Doe" />
                             </div>
 
-                            <div className='flex flex-col space-y-1.5'>
+                            <div className="flex flex-col space-y-1.5">
                                 <Label htmlFor="email">Email</Label>
-                                <Input id="email" name="email" placeholder="name@example.com" className={`${error?.error && error?.message.includes("Email") || error?.message.includes("email") ? "border-3 border-red-600" : ""}`} />
+                                <Input
+                                    id="email"
+                                    name="email"
+                                    type="email"
+                                    placeholder="john@example.com"
+                                />
                             </div>
 
-                            <div className='flex flex-col space-y-1.5'>
+                            <div className="flex flex-col space-y-1.5">
                                 <Label htmlFor="password">Password</Label>
-                                <Input type="password" id="password" name="password" placeholder="Enter new password" className={`${error?.error && error?.message.includes("Password") ? "border-3 border-red-600" : ""}`} />
+                                <Input
+                                    id="password"
+                                    name="password"
+                                    type="password"
+                                    placeholder="Enter new password"
+                                />
                             </div>
 
-                            <div className='flex flex-col space-y-1.5'>
+                            <div className="flex flex-col space-y-1.5">
                                 <Label htmlFor="confirm-password">Confirm Password</Label>
-                                <Input className={`${error?.error && error?.message.includes("Passwords do not match") ? "border-3 border-red-600" : ""}`} type="password" id="confirm-password" name="confirm-password" placeholder="Enter password again" />
+                                <Input
+                                    id="confirm-password"
+                                    name="confirm-password"
+                                    type="password"
+                                    placeholder="Enter password again to confirm"
+                                />
                             </div>
-                            <div>{error?.error && <span className='text-sm font-bold text-red-500'> {error.message}</span>}</div>
-                            <div className='flex justify-center gap-1 text-sm'>
-                                Already have an account? <Link href="/login" className='text-blue-600 hover:underline'>Login</Link>
+
+                            {/* form errors */}
+                            <div className="flex justify-center">
+                                {error?.error && (
+                                    <span className="text-red-600 text-xs text-center animate-pulse duration-1000">
+                                        {error.message}
+                                    </span>
+                                )}
+                            </div>
+
+                            <div className="flex justify-center gap-1 text-xs">
+                                Already have an account?{" "}
+                                <Link href="/login" className="text-blue-600 hover:underline">
+                                    Login
+                                </Link>
                             </div>
                         </div>
                     </CardContent>
-                    <CardFooter>
-                        <Button className='flex-1' type='submit' disabled={isLoading}> {isLoading && <Loader2 className="animate-spin" />}
-                            Register</Button>
+
+                    <CardFooter className="flex justify-center">
+                        <Button className="flex-1" type="submit" disabled={isLoading}>
+                            {isLoading && <Loader2 className="animate-spin" />}
+                            Register
+                        </Button>
                     </CardFooter>
                 </form>
             </Card>
-
         </div>
-    )
+    );
 }
-
-export default RegisterForm

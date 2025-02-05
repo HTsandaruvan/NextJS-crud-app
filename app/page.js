@@ -1,4 +1,4 @@
-import Carousel from "./dashboard/HeroImageSlider";
+import Carousel from "./Slider/HeroImageSlider";
 
 export default function Home() {
   return (

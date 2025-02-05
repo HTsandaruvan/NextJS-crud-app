@@ -1,8 +1,16 @@
 "use client";
 import React, { useState } from "react";
-import { loginUser } from "@/lib/apis/server";
-
+//import { loginUser } from "@/lib/apis/server";
+import { redirect } from "next/navigation";
+import { signIn } from "@/lib/auth-client";
+const DEFAULT_ERROR = {
+    error: false,
+    message: "",
+};
 const LoginForm = () => {
+
+    const [error, setError] = useState(DEFAULT_ERROR);
+
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [emailError, setemailError] = useState("");
@@ -30,10 +38,25 @@ const LoginForm = () => {
 
         if (isValid) {
             // Login Form Data Submission
-            const login = await loginUser({ email: email, password: password });
+            // const login = await loginUser({ email: email, password: password });
+            await signIn.email(
+                {
+                    email,
+                    password,
+                },
+                {
+                    onSuccess: () => {
+                        redirect("/dashboard");
+                    },
+                    onError: (ctx) => {
+                        setError({ error: true, message: ctx.error.message });
+                    },
+                }
+            );
+
             setEmail("");
             setPassword("");
-            console.log("LOGIN RESPONSE", login);
+
         }
     };
     return (
@@ -89,6 +112,8 @@ const LoginForm = () => {
                                 </div>
                             )}
                         </div>
+                        <div>{error?.error && <span className='text-sm font-bold text-red-500 flex justify-center text-center animate-pulse duration-1000'> {error.message}</span>}</div>
+
                         <div className="flex justify-between">
                             <div className="flex">
                                 <div className="flex items-center h-5">

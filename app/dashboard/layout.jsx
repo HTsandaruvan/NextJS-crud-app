@@ -1,6 +1,7 @@
 'use client'
 import React, { useState } from 'react';
 import UserNav from './components/user-nav';
+import SidePanel from './components/side-panel';
 
 const DashboardLayout = ({ children }) => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -9,10 +10,7 @@ const DashboardLayout = ({ children }) => {
         <div className="flex h-screen bg-gray-100/90">
             {/* Sidebar */}
             <aside className={`fixed inset-y-0 left-0 z-50 transform bg-green-400 transition-transform duration-300 ease-in-out md:relative md:w-64 ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0`}>
-                <div className="h-full overflow-y-auto p-4">
-                    <button className="block md:hidden sm:hidden text-white" onClick={() => setIsSidebarOpen(false)}>✖</button>
-                    <p>Side Panel</p>
-                </div>
+                <SidePanel />
             </aside>
 
             {/* Main Content */}

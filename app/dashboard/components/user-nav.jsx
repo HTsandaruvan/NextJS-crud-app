@@ -30,7 +30,7 @@ const UserNav = () => {
 
     return (
         <div>
-            <DropdownMenu>
+            <DropdownMenu className="bg-white">
                 <DropdownMenuTrigger asChild>
                     <Button variant="ghost" className="relative h-10 w-10 rounded-full">
                         <Avatar className="h-10 w-10 border-2 border-blue-500">

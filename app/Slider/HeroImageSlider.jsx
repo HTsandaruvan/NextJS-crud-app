@@ -80,8 +80,8 @@ const Carousel = () => {
                                     dicta repudiandae.
                                 </div>
                                 <div className="btn">
-                                    <button><Link href={"/dashboard"}>See More</Link></button>
-                                    <button>Watch Now</button>
+                                    <button><Link href={"/login"}>See More</Link></button>
+                                    <button><Link href={"/login"}> Watch Now</Link></button>
                                 </div>
                             </div>
                         )}

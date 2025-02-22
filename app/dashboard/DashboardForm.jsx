@@ -17,7 +17,10 @@ const DashboardForm = () => {
 
     useEffect(() => {
         const fetchMovies = async () => {
+
             try {
+
+
                 const result = await getMovies();
                 console.log("Movies from MongoDB:", result);
                 if (result?.movies) {

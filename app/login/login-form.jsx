@@ -129,10 +129,10 @@ const LoginForm = () => {
                                 </div>
                             </div>
                             <a
-                                href="/forget-password"
-                                className="text-sm text-blue-700 hover:underline "
+                                href="/reset-password"
+                                className="text-sm text-blue-700 hover:underline"
                             >
-                                Forget password
+                                Forgot password
                             </a>
                         </div>
                         <button

@@ -123,8 +123,12 @@ const RegisterForm = () => {
                 onRequest: (ctx) => {
                     //console.log("onRequest", ctx);
                 },
-                onSuccess: (ctx) => {
-                    console.log("onSuccess", ctx);
+                onSuccess: () => {
+                    toast({
+                        variant: "success",
+                        title: "Verify Your Email",
+                        description: "A verification email has been sent.",
+                    });
                 },
                 onError: (ctx) => {
                     if (ctx) {

@@ -88,14 +88,14 @@ const Carousel = () => {
                     </div>
                 ))}
             </div>
-            <div className="arrows">
+            {/* {/* <div className="arrows">
                 <button className="prev" onClick={handlePrev}>
                     {'<'}
                 </button>
                 <button className="next" onClick={handleNext}>
                     {'>'}
                 </button>
-            </div>
+            </div> */}
             <div className="timeRunning" ref={runningTimeRef}></div>
         </div>
     );

@@ -10,7 +10,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import EditMovieForm from "./edit-movie-form";
 import { updateMovie, deleteMovie } from "@/lib/actions/movie";
@@ -24,9 +24,12 @@ export default function MovieTable({ movies, refreshData }) {
     const [deletingMovie, setDeletingMovie] = useState(null);
     const { toast } = useToast()
 
+
     const handleEdit = (movie) => {
         setEditingMovie(movie);
     };
+    const [isClient, setIsClient] = useState(false);
+
 
     const handleEditSubmit = async (movie) => {
         const { id, title, year, plot, rated, genres, poster, imdb } = movie;
@@ -66,9 +69,14 @@ export default function MovieTable({ movies, refreshData }) {
             });
         }
     };
+    useEffect(() => {
+        setIsClient(true);
+    }, []);
+
 
     return (
         <div>
+            {isClient ? <div>Client-only content</div> : <div>Loading...</div>}
             <Table>
                 <TableHeader>
                     <TableRow>

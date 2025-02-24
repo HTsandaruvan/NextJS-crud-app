@@ -126,8 +126,9 @@ const RegisterForm = () => {
                 onSuccess: () => {
                     toast({
                         variant: "success",
-                        title: "Verify Your Email",
-                        description: "A verification email has been sent.",
+                        title: "Account created",
+                        description: "Your account has been successfully created.",
+                        action: <ToastAction className="bg-green-600 hover:bg-green-600/90" altText="Close"><Link href={"/login"}>Login</Link></ToastAction>,
                     });
                 },
                 onError: (ctx) => {

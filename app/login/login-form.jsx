@@ -3,11 +3,16 @@ import React, { useState } from "react";
 //import { loginUser } from "@/lib/apis/server";
 import { redirect } from "next/navigation";
 import { signIn } from "@/lib/auth-client";
+import { useToast } from "@/hooks/use-toast"
+import { ToastAction } from "@/components/ui/toast"
+import { Loader2 } from "lucide-react";
 const DEFAULT_ERROR = {
     error: false,
     message: "",
 };
 const LoginForm = () => {
+    const [isLoading, setLoading] = useState(false)
+    const { toast } = useToast()
 
     const [error, setError] = useState(DEFAULT_ERROR);
 
@@ -35,10 +40,11 @@ const LoginForm = () => {
         e.preventDefault();
 
         const isValid = validateForm();
-
         if (isValid) {
             // Login Form Data Submission
             // const login = await loginUser({ email: email, password: password });
+            setLoading(true)
+
             await signIn.email(
                 {
                     email,
@@ -46,6 +52,11 @@ const LoginForm = () => {
                 },
                 {
                     onSuccess: () => {
+                        toast({
+                            variant: "success",
+                            title: "Welcome Back",
+                            description: "Login Successfully.",
+                        });
                         redirect("/dashboard");
                     },
                     onError: (ctx) => {
@@ -53,6 +64,7 @@ const LoginForm = () => {
                     },
                 }
             );
+            setLoading(false)
 
             setEmail("");
             setPassword("");
@@ -135,13 +147,16 @@ const LoginForm = () => {
                                 Forgot password
                             </a>
                         </div>
-                        <button
-                            type="submit"
-                            className="w-full text-white bg-[#45a29e] hover:bg-[#45a29e]/90 transition-all focus-visible:ring-4 ring-2 focus:ring-blue-300 px-5 py-1.5"
-                        >
-                            Sign in
-                        </button>
-                        <div className="flex text-sm font-medium text-gray-500 space-x-1 justify-center">
+                        <div className="flex items-center ">
+                            <button
+                                type="submit"
+                                className="w-full text-white bg-[#45a29e] hover:bg-[#45a29e]/90 transition-all focus-visible:ring-4 ring-2 focus:ring-blue-300 px-5 py-1.5 flex items-center justify-center"
+                                disabled={isLoading}
+                            >
+                                {isLoading && <Loader2 className="animate-spin mr-2" />}
+                                <span>Sign in</span>
+                            </button>
+                        </div>                       <div className="flex text-sm font-medium text-gray-500 space-x-1 justify-center">
                             <span>Don’t have an account yet? </span>
                             <a
                                 className="text-sm text-blue-700 hover:underline"

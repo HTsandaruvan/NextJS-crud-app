@@ -25,13 +25,14 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { MultiSelect } from "@/components/multi-select";
 import { createMovie } from "@/lib/actions/movie";
-
+import { useRouter } from "next/navigation"; // Import useRouter
 
 
 const AddMovieForm = () => {
     const [genres, setGenres] = useState([]);
     const [rated, setRated] = useState("");
-
+    const { toast } = useToast(); // Get toast function from useToast
+    const router = useRouter(); // Initialize useRouter
     const genresList = GENRES.map((genre) => ({
         label: genre,
         value: genre,
@@ -58,6 +59,12 @@ const AddMovieForm = () => {
                 imdb: { rating: imdb },
             });
             setLoading(false);
+            if (resp?.success) {
+                toast({ title: "Success!", description: "Movie added successfully.", variant: "success" });
+                router.push('/dashboard/movies'); // Redirect to /movies
+            } else {
+                toast({ title: "Error", description: "Failed to add movie.", variant: "destructive" });
+            }
         }
     }
     return (

@@ -1,15 +1,10 @@
 import { NextResponse } from "next/server";
-import clientPromise from "@/lib/mongodb";
+import connectDB from "@/lib/mongodb";
 
-export const GET = async (req) => {
-  // Get Movies from the MongoDB
+export const GET = async () => {
   try {
-    const client = await clientPromise();
+    const db = await connectDB(); // Get the database instance
 
-    // sample_mflix is the database name
-    const db = client.db("sample_mflix");
-
-    // fetch movies from the database
     const movies = await db
       .collection("movies-new")
       .find({})
@@ -17,11 +12,13 @@ export const GET = async (req) => {
       .limit(12)
       .toArray();
 
+    console.log("Fetched Movies:", movies); // Debugging
+
     return NextResponse.json({ movies });
   } catch (error) {
-    console.log("MONGODB ERROR", error);
+    console.error("MONGODB ERROR", error);
     return NextResponse.json(
-      { error: "Internal host Server Error" },
+      { error: "Internal Server Error" },
       { status: 500 }
     );
   }

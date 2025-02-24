@@ -7,6 +7,9 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import Image from 'next/image';
 import { Badge } from '@/components/ui/badge';
 import { FaStar } from "react-icons/fa";
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
+import { BookDashed, Eye } from 'lucide-react';
 
 
 const DashboardForm = () => {
@@ -42,9 +45,17 @@ const DashboardForm = () => {
     if (error) return <div>{error}</div>;
     //TODO:
     return (
-        <div className="mx-auto">
-            <h1 className=' text-2xl font-medium text-sky-500 py-2'>Movies</h1>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 w-full">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8  my-5">
+            <div className=' flex justify-between flex-row items-center'>
+                <h1 className='text-3xl font-bold'>Browse Movies</h1>
+                <Link href="/dashboard/movies"> <Button
+                    variant="outline"
+                    className="hover:border-secondary-300 hover:bg-secondary-100/30"
+                >
+                    <BookDashed />
+                    Go to Dashboard
+                </Button></Link></div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 w-full my-4">
                 {movies.length > 0 ? (
                     movies.map((movie) => (
 
@@ -58,7 +69,7 @@ const DashboardForm = () => {
 
                                 <CardContent>
                                     <div className='flex justify-center bg-black w-full h-[220px] mb-4 rounded'>
-                                        <Image className='h-full w-auto object-contain' src={movie?.poster} alt={movie?.title} width={200} height={400} priority={true} />
+                                        <Image className='h-full w-auto object-contain ' src={movie?.poster} alt={movie?.title} width={200} height={400} priority={true} />
                                     </div>
                                     <div className="flex flex-col h-[154px] justify-between">
                                         <p className='line-clamp-3'>{movie?.plot}</p>

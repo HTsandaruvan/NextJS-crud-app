@@ -1,33 +1,54 @@
-'use client'
-import React, { useState } from 'react';
-import UserNav from './components/user-nav';
-import SidePanel from './components/side-panel';
+"use client";
 
-const DashboardLayout = ({ children }) => {
-    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+import { useState } from "react";
+import Link from "next/link";
+import { SidePanel } from "./components/side-panel";
+
+import { Button } from "@/components/ui/button";
+import { Menu, Home } from "lucide-react";
+import UserNav from "./components/user-nav";
+
+export default function DashboardLayout({ children }) {
+    const [isCollapsed, setIsCollapsed] = useState(false);
 
     return (
-        <div className="flex h-screen bg-gray-100/90">
-            {/* Sidebar */}
-            <aside className={`fixed inset-y-0 left-0 z-50 transform bg-green-400 transition-transform duration-300 ease-in-out md:relative md:w-64 ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0`}>
-                <SidePanel />
-            </aside>
-
-            {/* Main Content */}
-            <div className="flex flex-1 flex-col">
-                {/* Header */}
-                <header className="bg-slate-100/90 flex h-16 items-center justify-between gap-4 px-6 shadow-sm">
-                    {/* Sidebar Toggle Button */}
-                    <button className="md:hidden text-blue-800" onClick={() => setIsSidebarOpen(true)}>☰</button>
-                    <h1 className="text-2xl font-bold text-blue-800">Mflix Dashboard</h1>
-                    <UserNav />
+        <div className="flex h-screen overflow-hidden bg-gray-100">
+            <SidePanel isCollapsed={isCollapsed} />
+            <div className="flex flex-1 flex-col overflow-hidden">
+                <header className="flex h-16 items-center gap-4 border-b bg-white px-6 shadow-sm">
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => setIsCollapsed(!isCollapsed)}
+                        aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+                        className="text-gray-500 hover:text-gray-700"
+                    >
+                        <Menu className="h-6 w-6 text-primary-400" />
+                    </Button>
+                    <div className="flex flex-1 items-center justify-between">
+                        <div className="flex items-center gap-4">
+                            <h1 className="text-2xl font-bold text-primary-400">
+                                MFlix Dashboard
+                            </h1>
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                asChild
+                                className="hidden text-purple-600 border-purple-600 hover:bg-purple-50"
+                            >
+                                <Link href="/">
+                                    <Home className="mr-2 h-4 w-4" />
+                                    Home
+                                </Link>
+                            </Button>
+                        </div>
+                        <UserNav />
+                    </div>
                 </header>
-
-                {/* Content */}
-                <main className="flex-1 overflow-y-auto p-4">{children}</main>
+                <main className="flex-1 overflow-y-auto bg-gray-100 p-6">
+                    {children}
+                </main>
             </div>
         </div>
     );
-};
-
-export default DashboardLayout;
+}

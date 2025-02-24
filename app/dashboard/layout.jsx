@@ -9,7 +9,7 @@ import { Menu, Home } from "lucide-react";
 import UserNav from "./components/user-nav";
 
 export default function DashboardLayout({ children }) {
-    const [isCollapsed, setIsCollapsed] = useState(false);
+    const [isCollapsed, setIsCollapsed] = useState(true);
 
     return (
         <div className="flex h-screen overflow-hidden bg-gray-100">

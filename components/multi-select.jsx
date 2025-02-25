@@ -40,11 +40,13 @@ export function MultiSelect({ list, label, placeholder, selectedItems, onValueCh
                         );
                     })}
                 </ComboboxBadgeList>
-                <ComboboxInput
-                    placeholder={placeholder}
-                    className="h-auto min-w-32 flex-1 mr-5"
-                />
-                {/* ✅ Arrow is now positioned correctly */}
+                {/* Only show input when there are no selected items */}
+                {!selectedItems.length && (
+                    <ComboboxInput
+                        placeholder={placeholder}
+                        className="h-auto min-w-32 flex-1 mr-5"
+                    />
+                )}
                 <ComboboxTrigger className="absolute top-1/2 right-3 -translate-y-1/2">
                     <ChevronDown className="h-4 w-4" />
                 </ComboboxTrigger>

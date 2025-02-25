@@ -25,48 +25,78 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { MultiSelect } from "@/components/multi-select";
 import { createMovie } from "@/lib/actions/movie";
-import { useRouter } from "next/navigation"; // Import useRouter
+import { useRouter } from "next/navigation";
 
+const currentYear = new Date().getFullYear();
 
 const AddMovieForm = () => {
     const [genres, setGenres] = useState([]);
     const [rated, setRated] = useState("");
-    const { toast } = useToast(); // Get toast function from useToast
-    const router = useRouter(); // Initialize useRouter
+    const [errors, setErrors] = useState({});
+    const { toast } = useToast();
+    const router = useRouter();
+
     const genresList = GENRES.map((genre) => ({
         label: genre,
         value: genre,
     }));
 
-    const [isLoading, setLoading] = useState(false)
+    const [isLoading, setLoading] = useState(false);
+
+    const validateForm = (data) => {
+        let newErrors = {};
+
+        if (!data.title.trim()) newErrors.title = "Title is required.";
+        if (!data.plot.trim()) newErrors.plot = "Plot is required.";
+
+        if (!data.year || isNaN(data.year) || data.year < 1900 || data.year > currentYear) {
+            newErrors.year = `Year must be between 1900 and ${currentYear}.`;
+        }
+
+        if (!data.rated) newErrors.rated = "Rating is required.";
+
+        if (!data.genres.length) newErrors.genres = "At least one genre is required.";
+
+        if (!data.imdb || isNaN(data.imdb) || data.imdb < 0 || data.imdb > 10) {
+            newErrors.imdb = "IMDb rating must be between 0.0 and 10.0.";
+        }
+
+        const urlPattern = /^(https?:\/\/.*\.(?:png|jpg|jpeg|webp|gif|svg))$/i;
+        if (!data.poster || !urlPattern.test(data.poster)) {
+            newErrors.poster = "Valid poster URL is required (png, jpg, jpeg, webp, gif, svg).";
+        }
+
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    };
+
     const handleSubmitForm = async (event) => {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
-        const title = formData.get("title")?.toString();
-        const year = Number(formData.get("year"));
-        const plot = formData.get("plot")?.toString();
-        const poster = formData.get("poster")?.toString();
-        const imdb = Number(formData.get("imdb"));
-        if (title && year && plot && rated && poster) {
-            setLoading(true);
-            const resp = await createMovie({
-                title,
-                year,
-                plot,
-                rated,
-                genres,
-                poster,
-                imdb: { rating: imdb },
-            });
-            setLoading(false);
-            if (resp?.success) {
-                toast({ title: "Success!", description: "Movie added successfully.", variant: "success" });
-                router.push('/dashboard/movies'); // Redirect to /movies
-            } else {
-                toast({ title: "Error", description: "Failed to add movie.", variant: "destructive" });
-            }
+        const movieData = {
+            title: formData.get("title")?.toString(),
+            year: Number(formData.get("year")),
+            plot: formData.get("plot")?.toString(),
+            rated,
+            genres,
+            poster: formData.get("poster")?.toString(),
+            imdb: Number(formData.get("imdb")),
+        };
+
+        if (!validateForm(movieData)) return;
+
+        setLoading(true);
+        const resp = await createMovie(movieData);
+        setLoading(false);
+
+        if (resp?.success) {
+            toast({ title: "Success!", description: "Movie added successfully.", variant: "success" });
+            router.push('/dashboard/movies');
+        } else {
+            toast({ title: "Error", description: "Failed to add movie.", variant: "destructive" });
         }
-    }
+    };
+
     return (
         <Card className="max-w-2xl mx-auto">
             <CardHeader>
@@ -77,30 +107,20 @@ const AddMovieForm = () => {
                 <CardContent className="space-y-4">
                     <div>
                         <Label htmlFor="title">Movie Title</Label>
-                        <Input
-                            id="title"
-                            name="title"
-                            placeholder="Enter the movie title"
-                        />
+                        <Input id="title" name="title" placeholder="Enter the movie title" />
+                        {errors.title && <p className="text-red-500 text-sm">{errors.title}</p>}
                     </div>
 
                     <div>
                         <Label htmlFor="year">Movie Year</Label>
-                        <Input
-                            id="year"
-                            name="year"
-                            type="number"
-                            placeholder="Enter the year"
-                        />
+                        <Input id="year" name="year" type="number" placeholder="Enter the year" />
+                        {errors.year && <p className="text-red-500 text-sm">{errors.year}</p>}
                     </div>
 
                     <div>
                         <Label htmlFor="plot">Movie Plot</Label>
-                        <Textarea
-                            id="plot"
-                            name="plot"
-                            placeholder="Enter the movie plot"
-                        />
+                        <Textarea id="plot" name="plot" placeholder="Enter the movie plot" />
+                        {errors.plot && <p className="text-red-500 text-sm">{errors.plot}</p>}
                     </div>
 
                     <div>
@@ -110,12 +130,14 @@ const AddMovieForm = () => {
                             placeholder="Select movie genres"
                             selectedItems={genres}
                             onValueChange={setGenres}
+                            className="border-none"
                         />
-
+                        {errors.genres && <p className="text-red-500 text-sm">{errors.genres}</p>}
                     </div>
+
                     <div>
                         <Label htmlFor="rated">Movie Rated</Label>
-                        <Select onValueChange={(val) => setRated(val)}>
+                        <Select onValueChange={setRated}>
                             <SelectTrigger>
                                 <SelectValue placeholder="Select a rating" />
                             </SelectTrigger>
@@ -127,30 +149,19 @@ const AddMovieForm = () => {
                                 ))}
                             </SelectContent>
                         </Select>
+                        {errors.rated && <p className="text-red-500 text-sm">{errors.rated}</p>}
                     </div>
-
 
                     <div>
                         <Label htmlFor="imdb">IMDb Rating</Label>
-                        <Input
-                            id="imdb"
-                            name="imdb"
-                            max="10.0"
-                            step="0.1"
-                            type="number"
-                            placeholder="Enter imdb rating"
-                        />
+                        <Input id="imdb" name="imdb" type="number" max="10" step="0.1" placeholder="Enter IMDb rating" />
+                        {errors.imdb && <p className="text-red-500 text-sm">{errors.imdb}</p>}
                     </div>
 
                     <div>
                         <Label htmlFor="poster">Poster URL</Label>
-                        <Input
-                            id="poster"
-                            name="poster"
-                            type="text"
-                            defaultValue="https://m.media-amazon.com/images/M/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_FMjpg_UX700_.jpg"
-                            placeholder="Enter the poster URL"
-                        />
+                        <Input id="poster" name="poster" type="text" placeholder="Enter the poster URL" />
+                        {errors.poster && <p className="text-red-500 text-sm">{errors.poster}</p>}
                     </div>
                 </CardContent>
 
@@ -164,9 +175,7 @@ const AddMovieForm = () => {
                 </CardFooter>
             </form>
         </Card>
-    )
-}
-
-
+    );
+};
 
 export default AddMovieForm;

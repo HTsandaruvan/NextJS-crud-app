@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense } from "react";
+import { useEffect, useState, Suspense } from "react";
 import CountUp from "react-countup";
 import { Clapperboard, Users, FolderOpenDot, Shell } from "lucide-react";
 import {
@@ -10,8 +10,24 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
+import { getTotalMoviesCount } from "@/lib/actions/movie"; // Import the new action
+
+
 
 export default function DashboardPage() {
+    const [totalMovies, setTotalMovies] = useState(0);
+    const [loading, setLoading] = useState(true);
+    useEffect(() => {
+        const fetchTotalMovies = async () => {
+            const response = await getTotalMoviesCount();
+            if (response.success) {
+                setTotalMovies(response.count);
+            }
+            setLoading(false);
+        };
+
+        fetchTotalMovies();
+    }, []);
     return (
         <div className="space-y-6">
             <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
@@ -32,13 +48,16 @@ export default function DashboardPage() {
                         <Clapperboard className="w-6 h-6 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
-                        {/* <p className="text-4xl font-bold">234</p> */}
-                        <CountUp
-                            end={234}
-                            duration={5}
-                            delay={2}
-                            className="text-4xl font-bold"
-                        />
+                        {loading ? (
+                            <div className="text-4xl font-bold">Loading...</div>
+                        ) : (
+                            <CountUp
+                                end={totalMovies}
+                                duration={5}
+                                delay={2}
+                                className="text-4xl font-bold"
+                            />
+                        )}
                     </CardContent>
                 </Card>
                 <Card className="bg-gradient-to-br from-pink-500 to-red-500 text-white">

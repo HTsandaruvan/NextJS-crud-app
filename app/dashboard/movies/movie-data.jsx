@@ -1,7 +1,7 @@
 'use client'
 
 import { getMovies } from '@/lib/apis/server';
-import { Shell } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import MovieTable from './movie-table';
 
@@ -49,7 +49,7 @@ const MovieData = () => {
     if (loading) {
         return (
             <div className="flex justify-center items-center h-[186.5px]">
-                <Shell className="animate-spin duration-1000 text-purple-600" />
+                <Loader2 width={60} height={60} className="animate-spin duration-1000 text-[100px] text-purple-600" />
             </div>
         );
     }

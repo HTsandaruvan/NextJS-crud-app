@@ -73,12 +73,12 @@ const RegisterForm = () => {
                 }
             );
 
-            if (error || data?.error) {  // ✅ Proper error handling
+            if (error || data?.error) {  // Proper error handling
                 setError({ error: true, message: error?.message || data?.error });
-                return;  // ✅ Stop execution if there is an error
+                return;  // Stop execution if there is an error
             }
 
-            // ✅ Show success toast
+            //  Show success toast
             toast({
                 variant: "success",
                 title: "Account created",
@@ -90,7 +90,7 @@ const RegisterForm = () => {
                 ),
             });
 
-            // ✅ Redirect to login page after a delay
+            // Redirect to login page after a delay
             setTimeout(() => {
                 router.push("/login");
             }, 2000);

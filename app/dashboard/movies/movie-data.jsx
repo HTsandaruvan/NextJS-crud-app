@@ -25,7 +25,7 @@ const MovieData = () => {
                     rated: movie.rated,
                     genres: movie.genres,
                     poster: movie.poster,
-                    imdb: movie.imdb?.rating || "N/A", // ✅ Extract only imdb.rating
+                    imdb: movie.imdb,
                 }));
                 setMovies(refinedMovies);
             } else {

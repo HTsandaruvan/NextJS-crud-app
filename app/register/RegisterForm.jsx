@@ -32,27 +32,74 @@ const RegisterForm = () => {
         const password = formData.get("password").toString() ?? "";
         const confirmPassword = formData.get("confirm-password") ?? "";
 
-        // Validation Logic
-        if (!name.trim()) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Basic email format
+        const nameRegex = /^[a-zA-Z\s]+$/; // Only letters and spaces
+        const passwordValidation = {
+            minLength: 8,
+            uppercase: /[A-Z]/,
+            lowercase: /[a-z]/,
+            number: /[0-9]/,
+            specialCharacter: /[@$!%*?&]/,
+        };
+
+
+        // Name Validation
+        if (!name) {
             setError({ error: true, message: "Name is required." });
             return;
         }
 
-        if (!email.trim()) {
+        if (!nameRegex.test(name)) {
+            setError({ error: true, message: "Name can only contain letters and spaces." });
+            return;
+        }
+
+        // Email Validation
+        if (!email) {
             setError({ error: true, message: "Email is required." });
             return;
         }
+
+        if (!emailRegex.test(email)) {
+            setError({ error: true, message: "Invalid email format." });
+            return;
+        }
+
+        // Password Validation
 
         if (!password) {
             setError({ error: true, message: "Password is required." });
             return;
         }
-
-        if (password !== confirmPassword) {
+        if (confirmPassword !== null && (password !== confirmPassword)) {
             setError({ error: true, message: "Passwords do not match." });
             return;
         }
 
+        if (password.length < passwordValidation.minLength) {
+            setError({ error: true, message: `Password must be at least ${passwordValidation.minLength} characters long.` });
+            return;
+        }
+
+        if (!passwordValidation.uppercase.test(password)) {
+            setError({ error: true, message: "Password must contain at least one uppercase letter." });
+            return;
+        }
+
+        if (!passwordValidation.lowercase.test(password)) {
+            setError({ error: true, message: "Password must contain at least one lowercase letter." });
+            return;
+        }
+
+        if (!passwordValidation.number.test(password)) {
+            setError({ error: true, message: "Password must contain at least one number." });
+            return;
+        }
+
+        if (!passwordValidation.specialCharacter.test(password)) {
+            setError({ error: true, message: "Password must contain at least one special character (@, $, !, %, *, ?, &)." });
+            return;
+        }
         setError(DEFAULT_ERROR);
         setLoading(true);
 

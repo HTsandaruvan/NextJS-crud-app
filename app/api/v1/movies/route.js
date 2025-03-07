@@ -6,7 +6,7 @@ export const GET = async () => {
     const db = await connectDB(); // Get the database instance
 
     const movies = await db
-      .collection("movies")
+      .collection("movies-new")
       .find({})
       .sort({ metacritic: -1 })
       .limit(20)
